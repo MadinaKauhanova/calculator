@@ -9,13 +9,23 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     Button button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9;
-    Button button_c, button_plmin;
-    TextView tvSan;
+    Button button_c, button_plmin, button_plus, button_min, button_x, button_bolu, button_equal;
+    TextView tvSan, tvZapis;
 
+    String birinshiSan, ekinshiSan, znak, zapisText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initViews();
+        sandarMathod();
+        oshiruPlusMinusMethod();
+        functionMethod();
+
+    }
+
+    public void initViews(){
         button_0 = findViewById(R.id.button_0);
         button_1 = findViewById(R.id.button_1);
         button_2 = findViewById(R.id.button_2);
@@ -30,7 +40,17 @@ public class MainActivity extends AppCompatActivity {
         button_c = findViewById(R.id.button_c);
         button_plmin = findViewById(R.id.button_plmin);
 
-        tvSan = findViewById(R.id.tv_san);
+        button_plus = findViewById(R.id.button_plus);
+        button_min = findViewById(R.id.button_min);
+
+        button_x = findViewById(R.id.button_x);
+        button_bolu = findViewById(R.id.button_bolu);
+        button_equal = findViewById(R.id.button_equal);
+
+        tvSan = findViewById(R.id.tvSan);
+        tvZapis = findViewById(R.id.tvZapis);
+    }
+    public void sandarMathod(){
         View.OnClickListener buttonSandar = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
         button_7.setOnClickListener(buttonSandar);
         button_8.setOnClickListener(buttonSandar);
         button_9.setOnClickListener(buttonSandar);
-
+    }
+    public void oshiruPlusMinusMethod() {
         View.OnClickListener button_c_plmin = new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -93,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (iddd == R.id.button_c) {
                     tvSan.setText("0");
+                    tvZapis.setText("");
                 }
                 else if (iddd == R.id.button_plmin) {
                     String sanText = tvSan.getText().toString();
@@ -109,5 +131,56 @@ public class MainActivity extends AppCompatActivity {
 
         button_c.setOnClickListener(button_c_plmin);
         button_plmin.setOnClickListener(button_c_plmin);
+    }
+    public void functionMethod(){
+        View.OnClickListener btnFunctions = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int idddd = view.getId();
+                birinshiSan = tvSan.getText().toString();
+
+                if (idddd == R.id.button_plus) {
+                    znak = "+";
+                }else if (idddd == R.id.button_min) {
+                    znak = "-";
+                }else if (idddd == R.id.button_x) {
+                    znak = "*";
+                }else if (idddd == R.id.button_bolu) {
+                    znak = "/";
+                }
+
+                zapisText = birinshiSan + znak;
+                tvZapis.setText(zapisText);
+                tvSan.setText("0");
+            }
+        };
+
+        button_plus.setOnClickListener(btnFunctions);
+        button_min.setOnClickListener(btnFunctions);
+        button_x.setOnClickListener(btnFunctions);
+        button_bolu.setOnClickListener(btnFunctions);
+        button_equal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ekinshiSan = tvSan.getText().toString();
+                int san1 = Integer.parseInt(birinshiSan);
+                int san2 = Integer.parseInt(ekinshiSan);
+                int res = 0;
+
+                if (znak.equals("+")) {
+                    res = san1 + san2;
+                } else if (znak.equals("-")) {
+                    res = san1 - san2;
+                }else if (znak.equals("*")) {
+                    res = san1 * san2;
+                }else if (znak.equals("/")) {
+                    res = san1 / san2;
+                }
+
+                zapisText = birinshiSan + znak + ekinshiSan + " = "+res;
+                tvZapis.setText(zapisText);
+                tvSan.setText(""+res);
+            }
+        });
     }
 }
